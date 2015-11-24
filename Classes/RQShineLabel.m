@@ -91,8 +91,8 @@
 }
 
 -(void)setAttributedText:(NSAttributedString *)attributedText
-{
-  self.attributedString = [self initialAttributedStringFromAttributedString:attributedText];
+{    
+    self.attributedString = [self initialAttributedStringFromAttributedString:attributedText];
 	[super setAttributedText:self.attributedString];
 	for (NSUInteger i = 0; i < attributedText.length; i++) {
 		self.characterAnimationDelays[i] = @(arc4random_uniform(self.shineDuration / 2 * 100) / 100.0);
@@ -173,7 +173,14 @@
                                      if (self.isFadedOut) {
                                        percentage = 1 - percentage;
                                      }
-                                     UIColor *color = [self.textColor colorWithAlphaComponent:percentage];
+                                       
+                                       
+                                     UIColor *color = [(UIColor *)value colorWithAlphaComponent:percentage];
+                                       
+                                       if (!color) {
+                                           return;
+                                       }
+                                       
                                      [self.attributedString addAttribute:NSForegroundColorAttributeName value:color range:range];
                                    }];
   }
@@ -188,11 +195,18 @@
 
 - (NSMutableAttributedString *)initialAttributedStringFromAttributedString:(NSAttributedString *)attributedString
 {
-  NSMutableAttributedString *mutableAttributedString = [attributedString mutableCopy];
-  UIColor *color = [self.textColor colorWithAlphaComponent:0];
-  [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, mutableAttributedString.length)];
+    NSMutableAttributedString *mutableAttributedString = [attributedString mutableCopy];
+    [attributedString enumerateAttributesInRange:NSMakeRange(0, [attributedString length])
+                                       options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                                    usingBlock:^(NSDictionary *attributes, NSRange range, BOOL *stop)
+     {
+         UIColor *color = [attributes objectForKey:NSForegroundColorAttributeName];
+         if (!color) {
+             color = [self.textColor colorWithAlphaComponent:0];
+             [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, mutableAttributedString.length)];
+         }
+     }];
   return mutableAttributedString;
 }
-
 
 @end
