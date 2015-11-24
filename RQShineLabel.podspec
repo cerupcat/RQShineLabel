@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.screenshots      = "https://raw.githubusercontent.com/zipme/RQShineLabel/master/Screenshots/rqshinelabel.gif", "https://raw.githubusercontent.com/zipme/RQShineLabel/master/Screenshots/1.png"
   s.license          = 'MIT'
   s.author           = { "gk" => "gk@reteq.com" }
-  s.source           = { :git => "https://github.com/zipme/RQShineLabel.git", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/cerupcat/RQShineLabel.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/zipme'
 
   s.platform     = :ios
